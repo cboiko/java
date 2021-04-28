@@ -1,10 +1,10 @@
-import java.util.Arrays;
-
 class Test {
     public static void main(String[] args) {        
-        int[] numbers = {583,85,93,95,97,17,198,10,12,168,19,19,20};
-        Arrays.sort(numbers);
-        System.out.println(Arrays.toString(numbers));
+        
+        String loto = "2,3,4,8,9,13,16,20,25,29,30,32,38,49,51,53,54,55,69,82";
+        Lotomania.checkWinner(loto);
+
+        
 
     }    
 }

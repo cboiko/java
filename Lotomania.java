@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 public class Lotomania {
 
     static final String FILE_LOCATION_STRING = "/home/boiko/loterias/lotomania.csv";    
+    static final String BETS_MADE = "/home/boiko/loterias/lotomania-done.txt";
 
     static double multiplyDouble(double number, int times){
         double result = 1;
@@ -177,13 +178,59 @@ public class Lotomania {
         return fixedLines;
     }
 
+    static void checkWinner(String loto){
+        List<String> lines = null;
+        List<Integer> lotoArray = getLotoArray(loto);
+        try {
+            lines = Files.readAllLines(Paths.get(BETS_MADE), StandardCharsets.UTF_8);                        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+                
+        for (String s : lines){
+            List<Integer> row = getLotoArray(s);
+            int counter=0;
+            for (var number : lotoArray)
+                if (row.contains(number))
+                    counter++;
+            System.out.println(s);
+            System.out.println("Hits: " + counter);
+        }
+
+    }
+        
+
+    static void countOddEven(){
+        List<String> lines = getLines();
+        int maxOdd=0;
+        int maxEven=0;
+        for (String s : lines){
+            List<Integer> row = getLotoArray(s);
+            int odd = 0;
+            int even = 0;
+            for (var number : row)
+                if (number % 2  == 0)
+                    even++;
+                else odd++;
+
+            if (even > maxEven) maxEven = even;
+            if (odd > maxOdd) maxOdd = odd;            
+            if (even == 16) System.out.println(s + " " + lines.indexOf(s));
+        }
+
+        System.out.println("Max Odd " + maxOdd);
+        System.out.println("Max Even " + maxEven);
+
+    }
+    
+    
     public static void main(String[] args) throws IOException {
         //AVERAGE_PROBABILITY = 4.3
         //PROBABILITY_AFTER_SEQUENCE = 8 (86%
         //AVERAGE_SEQ_SUM = 61
         final int AVERAGE_PROBABILITY_SEQ = 2; //Each loto has at least two sequences higher than 8
         final int AVERAGE_SEQUENCE_COUNT = 8; //Each loto has at least 8 sequences 
-        final int[] SEQ = {4,8,12};
+        final int[] SEQ = {8,12};
         boolean valid = false;
         String loto = "";
 

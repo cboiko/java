@@ -16,6 +16,25 @@ public class Lotomania {
     static final String FILE_LOCATION_STRING = "/home/boiko/loterias/lotomania.csv";    
     static final String BETS_MADE = "/home/boiko/loterias/lotomania-done.txt";
 
+    static int getHits(String loto){
+        int hits = 0;
+        List<String> lines = getLines();
+        List<Integer> lotoArray = getLotoArray(loto);
+
+        for (String s : lines){
+            List<Integer> row = getLotoArray(s);
+            int counter=0;
+            for (var number : lotoArray)
+                if (row.contains(number))
+                    counter++;
+            
+            if (counter == 0 || counter == 20 || counter == 19 || counter == 18)
+                hits++;
+                
+        }
+        return hits;
+    }
+
     static double multiplyDouble(double number, int times){
         double result = 1;
         for (var i = 0; i < times; i++){
@@ -199,7 +218,6 @@ public class Lotomania {
 
     }
         
-
     static void countOddEven(){
         List<String> lines = getLines();
         int maxOdd=0;
@@ -222,7 +240,6 @@ public class Lotomania {
         System.out.println("Max Even " + maxEven);
 
     }
-    
     
     public static void main(String[] args) throws IOException {
         //AVERAGE_PROBABILITY = 4.3

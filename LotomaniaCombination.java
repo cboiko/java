@@ -15,7 +15,7 @@ public class LotomaniaCombination {
         BufferedWriter writer = new BufferedWriter(fw);
         StringBuilder sb = new StringBuilder();
         List<String> lines = Lotomania.getLines();
-
+        int maxHits = 0;
         while (r >= 0) {
             
             if (i <= (N + (r - k))) {
@@ -28,6 +28,7 @@ public class LotomaniaCombination {
                         sb.append(",");
                     }
                     int hits =  Lotomania.getHits(sb.toString(), lines);
+                    if (hits > maxHits) maxHits = hits;
                     sb.append(Integer.toString(hits));
                     writer.write(sb.toString());
                     i++;
@@ -46,7 +47,7 @@ public class LotomaniaCombination {
             }
         }
         writer.close();
-        
+        System.out.println("Max Hits: " + maxHits);
     }
 
     public static void main(String[] args) {

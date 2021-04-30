@@ -13,12 +13,11 @@ import java.nio.file.Paths;
 
 public class Lotomania {
 
-    static final String FILE_LOCATION_STRING = "/home/boiko/loterias/lotomania.csv";    
-    static final String BETS_MADE = "/home/boiko/loterias/lotomania-done.txt";
+    static final String FILE_LOCATION_STRING = "D:\\loterias\\lotomania.csv";    
+    static final String BETS_MADE = "D:\\loterias\\lotomania-done.txt";
 
-    static int getHits(String loto){
-        int hits = 0;
-        List<String> lines = getLines();
+    static int getHits(String loto, List<String> lines){
+        int hits = 0;        
         List<Integer> lotoArray = getLotoArray(loto);
 
         for (String s : lines){
@@ -254,7 +253,6 @@ public class Lotomania {
         
         while (true){            
             valid = false;            
-            long startTime = System.currentTimeMillis();
             loto = createNewLotoSequence(SEQ);
             TreeMap<Integer, Integer> sequences = new TreeMap<>();
             sequences = getSequences(loto);
@@ -269,13 +267,11 @@ public class Lotomania {
                 valid = true;
 
             if (valid){
-                long endTime = System.currentTimeMillis();
                 FileWriter fw = new FileWriter("bets.txt", true);
                 BufferedWriter writer = new BufferedWriter(fw);
                 writer.write(loto + "\t");
                 writer.write(getSequences(loto) + "\t");
                 writer.write(getLotoProbability(loto) + "\t");
-                writer.write("Time: " + ((endTime-startTime)/1000) + " seconds" + "\n");
                 writer.close();
                 System.out.println(loto + " created.");
             }

@@ -1,40 +1,43 @@
-import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
-public class LotomaniaCombination {
+public class LotomaniaCombination {    
     
-    static void combination(int[] elements, int k) {
+    static void combination(int[] elements, int k) throws IOException {
 
         int N = elements.length; // get the length of the array e.g. for {'A','B','C','D'} => N = 4        
         int pointers[] = new int[k]; // init combination index array
         int r = 0; // index for combination array
         int i = 0; // index for elements array
-        int combinationCount=0;
+        FileWriter fw = new FileWriter("D:\\allBets.txt", true);
+        BufferedWriter writer = new BufferedWriter(fw);
         StringBuilder sb = new StringBuilder();
-        while (r >= 0) {
+        List<String> lines = Lotomania.getLines();
 
-            // forward step if i < (N + (r-K))
+        while (r >= 0) {
+            
             if (i <= (N + (r - k))) {
                 pointers[r] = i;
-
-                // if combination array is full print and increment i;
+                
                 if (r == k - 1) {
                     sb.setLength(0);
                     for (int j=0; j < pointers.length; j++){
                         sb.append(elements[pointers[j]]);
                         sb.append(",");
                     }
-                    //sb.setCharAt(sb.length()-1, ' ');
-                    System.out.println(sb.toString());                    
+                    int hits =  Lotomania.getHits(sb.toString(), lines);
+                    sb.append(Integer.toString(hits));
+                    writer.write(sb.toString());
                     i++;
-                } else {
-                    // if combination is not full yet, select next element
+                    break; //testing the first line
+                } else {                    
                     i = pointers[r] + 1;
                     r++;
                 }
             }
 
-            // backward step
             else {
                 r--;
                 if (r >= 0)
@@ -42,7 +45,8 @@ public class LotomaniaCombination {
 
             }
         }
-        System.out.println(combinationCount);
+        writer.close();
+        
     }
 
     public static void main(String[] args) {
@@ -51,10 +55,10 @@ public class LotomaniaCombination {
                 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78,
                 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99};        
 
-        int testeArr[] = {1,2,3,4,5};
-        int k = 3;
-                
-        combination(lotoArr, 3);
-        //System.out.println(size);
+        try {
+            combination(lotoArr, 50);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }        
     }
 }

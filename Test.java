@@ -12,6 +12,6 @@ public class Test {
             hits = Lotomania.getHits(loto);
         }
         System.out.println(loto);
-        System.out.println(getHits(loto));
+        System.out.println(Lotomania.getHits(loto));
     }
 }

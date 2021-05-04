@@ -1,7 +1,8 @@
 public class Test {
     public static void main(String[] args) {
         
-        String loto = "10,28,32,36,43,44,45,46,54,59,64,66,71,73,74,80,82,86,94,95";
+        String loto = "11,5,6,19,20,22,26,28,31,37,40,46,54,55,57,59,66,75,87,92";
+        
         Lotomania.checkWinner(loto);
 
         // int[] arr = {4};

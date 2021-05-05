@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.io.BufferedWriter;
@@ -181,6 +182,16 @@ public class Lotomania {
         return arrayLine;
     }   
 
+    static String toLotoArray(ArrayList<Integer> list){
+        Collections.sort(list);
+        String newLoto = "";
+        for (var number : list)
+                newLoto += Integer.toString(number) + ",";
+            
+            newLoto = newLoto.substring(0, newLoto.length() - 1);            
+        return newLoto;
+    }
+
     static List<String> getLines() {
         List<String> lines = null;
         try {
@@ -194,6 +205,29 @@ public class Lotomania {
             fixedLines.add(s.replaceAll("100", "0"));
         
         return fixedLines;
+    }
+
+    static void checkOddEven(){
+        List<String> lines = null;
+        try {
+            lines = Files.readAllLines(Paths.get(BETS_MADE), StandardCharsets.UTF_8);                        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (String s : lines){
+            List<Integer> row = getLotoArray(s);
+            int odd = 0;
+            int even = 0;
+            for (var number : row)
+                if (number % 2 == 0) even++;
+                else odd++;
+    
+            System.out.println(s);
+            System.out.println("Even: " + even + " Odd: " + odd);
+        }
+         
+
     }
 
     static void checkWinner(String loto){
@@ -240,6 +274,40 @@ public class Lotomania {
 
     }
     
+    public static <K, V extends Comparable<V> > Map<K, V> valueSort(final Map<K, V> map) {        
+        Comparator<K> valueComparator = new Comparator<K>(){              
+            public int compare(K k1, K k2){  
+                int comp = map.get(k1).compareTo(map.get(k2));  
+                if (comp == 0)
+                     return 1;  
+                else
+                     return comp;
+            }
+        };
+
+        Map<K, V> sorted = new TreeMap<K, V>(valueComparator);  
+        sorted.putAll(map);  
+        return sorted;
+    }
+
+    static TreeMap<Integer,Integer> countNumbers(){
+        List<String> lines = getLines();        
+        TreeMap<Integer, Integer> numbers = new TreeMap<>();
+
+        for (String s : lines ){            
+            ArrayList<Integer> arrayLine = getLotoArray(s);
+
+            for (int i = 1; i <= 100; i++) {
+                if (arrayLine.contains(i))
+                    if (numbers.containsKey(i))
+                        numbers.put(i, numbers.get(i) + 1);
+                    else numbers.put(i,1);
+            }            
+        }
+
+        return numbers;
+        
+    }
     public static void main(String[] args) throws IOException {
         //AVERAGE_PROBABILITY = 4.3
         //PROBABILITY_AFTER_SEQUENCE = 8 (86%

@@ -1,7 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+//import java.util.List;
 
 public class LotomaniaCombination {    
     
@@ -14,7 +14,7 @@ public class LotomaniaCombination {
         FileWriter fw = new FileWriter("D:\\allBets.txt", true);
         BufferedWriter writer = new BufferedWriter(fw);
         StringBuilder sb = new StringBuilder();
-        List<String> lines = Lotomania.getLines();
+        //List<String> lines = Lotomania.getLines();
         
         while (r >= 0) {
             
@@ -27,9 +27,6 @@ public class LotomaniaCombination {
                         sb.append(elements[pointers[j]]);
                         sb.append(",");
                     }
-                    int hits =  Lotomania.getHits(sb.toString(), lines);
-                    
-                    sb.append(Integer.toString(hits));
                     sb.append("\n");
                     writer.write(sb.toString());
                     i++;
@@ -56,10 +53,12 @@ public class LotomaniaCombination {
         //         53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78,
         //         79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99};        
 
-        // try {
-        //     combination(lotoArr, 50);
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }        
+        int arr[] = {1,2,3,4,5,6};
+    
+        try {
+            combination(arr, 3 );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }        
     }
 }

@@ -28,7 +28,7 @@ public class Lotomania {
                 if (row.contains(number))
                     counter++;
             
-            if (counter == 0 || counter == 20 || counter == 19 || counter == 18)
+            if (counter == 0 )//|| counter == 20 || counter == 19 || counter == 18)
                 hits++;
                 
         }
@@ -251,6 +251,22 @@ public class Lotomania {
 
     }
         
+    static String createLoto(){
+        ArrayList<Integer> arrayLoto = new ArrayList<>();
+        int counter = 0;
+        while (counter < 50){
+            int random = (int) (Math.random() * 99);
+            if (!arrayLoto.contains(random)){
+                arrayLoto.add(random);
+                counter++;
+            }        
+        }
+        Collections.sort(arrayLoto);
+        
+        return Lotomania.toLotoArray(arrayLoto);
+
+    }
+
     static void countOddEven(){
         List<String> lines = getLines();
         int maxOdd=0;
@@ -344,6 +360,15 @@ public class Lotomania {
                 System.out.println(loto + " created.");
             }
         }
+        // List<String> lines = getLines();
+        // int hits = 0;
+        
+        // while (hits < 2){
+        //     loto = createLoto();
+        //     hits = Lotomania.getHits(loto, lines);
+        // }
+        // System.out.println(hits + " : " + loto);
+        
         
 
     }

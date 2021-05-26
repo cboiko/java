@@ -28,7 +28,7 @@ public class Lotomania {
                 if (row.contains(number))
                     counter++;
             
-            if (counter == 0 )//|| counter == 20 || counter == 19 || counter == 18)
+            if (counter == 0 || counter == 20 || counter == 19 || counter == 18)
                 hits++;
                 
         }
@@ -173,11 +173,16 @@ public class Lotomania {
         return mirrorLoto;
     }
 
-    static ArrayList<Integer> getLotoArray(String loto) {
+    static ArrayList<Integer> getLotoArray(String loto)  {
         String[] arrayString = loto.split(",");
         ArrayList<Integer> arrayLine = new ArrayList<>();
         for (String num : arrayString)
-            arrayLine.add(Integer.parseInt(num));
+            try {
+                arrayLine.add(Integer.parseInt(num));
+            } catch (NumberFormatException e) {
+                System.out.println("NaN");
+            }
+            
 
         return arrayLine;
     }   
@@ -230,14 +235,13 @@ public class Lotomania {
 
     }
 
-    static void checkWinner(String loto){
-        List<String> lines = null;
+    static void checkWinner(String loto, List<String> lines){        
         List<Integer> lotoArray = getLotoArray(loto);
-        try {
-            lines = Files.readAllLines(Paths.get(BETS_MADE), StandardCharsets.UTF_8);                        
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     lines = Files.readAllLines(Paths.get(BETS_MADE), StandardCharsets.UTF_8);                        
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // } 
                 
         for (String s : lines){
             List<Integer> row = getLotoArray(s);
@@ -264,6 +268,35 @@ public class Lotomania {
         Collections.sort(arrayLoto);
         
         return Lotomania.toLotoArray(arrayLoto);
+
+    }
+
+    static List<String> createLotoFromFile(){
+        List<String> lines = Lotomania.getLines();                
+        List<String> allTickets = new ArrayList<>();
+
+        int counter = 0;
+        for (String first : lines) {
+            ArrayList<Integer> numbers = new ArrayList<>(Lotomania.getLotoArray(first));
+            counter++;
+            for (int i = counter; i < lines.size(); i++){
+                ArrayList<Integer> num = Lotomania.getLotoArray(lines.get(i));                
+                for (int n : num){
+                    if (!numbers.contains(n))
+                        numbers.add(n);
+                    if (numbers.size() == 50){                        
+                        Collections.sort(numbers);
+                        String numString = Lotomania.toLotoArray(numbers);
+                        if (!allTickets.contains(numString))
+                            allTickets.add(numString);
+                        numbers.clear();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return allTickets;
 
     }
 
@@ -360,16 +393,6 @@ public class Lotomania {
                 System.out.println(loto + " created.");
             }
         }
-        // List<String> lines = getLines();
-        // int hits = 0;
-        
-        // while (hits < 2){
-        //     loto = createLoto();
-        //     hits = Lotomania.getHits(loto, lines);
-        // }
-        // System.out.println(hits + " : " + loto);
-        
-        
 
     }
 }

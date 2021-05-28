@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+// import java.io.BufferedWriter;
+// import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -28,7 +28,7 @@ public class Lotomania {
                 if (row.contains(number))
                     counter++;
             
-            if (counter == 0 || counter == 20 || counter == 19 || counter == 18)
+            if (Arrays.asList(0,20,19,18,17,16).contains(counter))
                 hits++;
                 
         }
@@ -357,42 +357,77 @@ public class Lotomania {
         return numbers;
         
     }
+    
+    static int get15(String loto, List<String> lines){
+        int hits = 0;        
+        List<Integer> lotoArray = Lotomania.getLotoArray(loto);
+
+        for (String s : lines){
+            List<Integer> row = Lotomania.getLotoArray(s);
+            int counter=0;
+            for (var number : lotoArray)
+                if (row.contains(number))
+                    counter++;
+            
+            if (counter == 15)
+                hits++;
+                
+        }
+        return hits;
+    }
     public static void main(String[] args) throws IOException {
         //AVERAGE_PROBABILITY = 4.3
         //PROBABILITY_AFTER_SEQUENCE = 8 (86%
         //AVERAGE_SEQ_SUM = 61
-        final int AVERAGE_PROBABILITY_SEQ = 2; //Each loto has at least two sequences higher than 8
-        final int AVERAGE_SEQUENCE_COUNT = 8; //Each loto has at least 8 sequences 
-        final int[] SEQ = {8,12};
-        boolean valid = false;
-        String loto = "";
+        // final int AVERAGE_PROBABILITY_SEQ = 2; //Each loto has at least two sequences higher than 8
+        // final int AVERAGE_SEQUENCE_COUNT = 8; //Each loto has at least 8 sequences 
+        // final int[] SEQ = {8,12};
+        // boolean valid = false;
+        // String loto = "";
 
         
-        while (true){            
-            valid = false;            
-            loto = createNewLotoSequence(SEQ);
-            TreeMap<Integer, Integer> sequences = new TreeMap<>();
-            sequences = getSequences(loto);
+        // while (true){            
+        //     valid = false;            
+        //     loto = createNewLotoSequence(SEQ);
+        //     TreeMap<Integer, Integer> sequences = new TreeMap<>();
+        //     sequences = getSequences(loto);
             
-            ArrayList<Integer> keys = new ArrayList<>(sequences.keySet());
-            int counter = 0;
-            for (Integer i : keys)
-                if (i > 8)
-                    counter++;
+        //     ArrayList<Integer> keys = new ArrayList<>(sequences.keySet());
+        //     int counter = 0;
+        //     for (Integer i : keys)
+        //         if (i > 8)
+        //             counter++;
 
-            if (counter > AVERAGE_PROBABILITY_SEQ && sequences.size() >= AVERAGE_SEQUENCE_COUNT)
-                valid = true;
+        //     if (counter > AVERAGE_PROBABILITY_SEQ && sequences.size() >= AVERAGE_SEQUENCE_COUNT)
+        //         valid = true;
 
-            if (valid){
-                FileWriter fw = new FileWriter("bets.txt", true);
-                BufferedWriter writer = new BufferedWriter(fw);
-                writer.write(loto + "\t");
-                writer.write(getSequences(loto) + "\t");
-                writer.write(getLotoProbability(loto) + "\t");
-                writer.close();
-                System.out.println(loto + " created.");
-            }
-        }
+        //     if (valid){
+        //         FileWriter fw = new FileWriter("bets.txt", true);
+        //         BufferedWriter writer = new BufferedWriter(fw);
+        //         writer.write(loto + "\t");
+        //         writer.write(getSequences(loto) + "\t");
+        //         writer.write(getLotoProbability(loto) + "\t");
+        //         writer.close();
+        //         System.out.println(loto + " created.");
+        //     }
+        // }
+        
+        List<String> lines = Lotomania.getLines();
+        String loto = null; 
+        int hits = 0;
+        int[] seq = {10};
+        int fifteen = 0;
+        boolean valid = true;
+        do {
+            loto = Lotomania.createNewLotoSequence(seq);
+            hits = Lotomania.getHits(loto, lines);
+            fifteen = get15(loto, lines);
+            if (hits == 0 && fifteen < 8)  
+                valid = false;
+        } while (valid);
+        
+        System.out.println(fifteen + " " + loto);
+        
 
     }
 }
